@@ -10,6 +10,11 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
+  List<Task> tasks = [
+    Task(name: 'Buy milk'),
+    Task(name: 'Buy eggs'),
+    Task(name: 'Buy bread'),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +24,16 @@ class _TaskScreenState extends State<TaskScreen> {
         child: Icon(Icons.add),
         onPressed: () {
           showModalBottomSheet(
-              context: context, builder: (context) => AddTaskScreen());
+            context: context,
+            builder: (context) => AddTaskScreen(
+              addTaskCallback: (newTaskTitle) {
+                setState(() {
+                  tasks.add(Task(name: newTaskTitle));
+                });
+                Navigator.pop(context);
+              },
+            ),
+          );
         },
       ),
       body: Column(
@@ -78,11 +92,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 ),
               ),
               child: TasksList(
-                tasks: [
-                  Task(name: 'Buy milk'),
-                  Task(name: 'Buy eggs'),
-                  Task(name: 'Buy bread'),
-                ],
+                tasks: tasks,
               ),
             ),
           ),
